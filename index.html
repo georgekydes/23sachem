@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="app">
-    <div class="container">
+    <div class="container-fluid">
         <div class="sticky-top fs-4 bg-primary text-white p-2 mb-3">
             23 Sachem - Furniture
             <div v-if="haveItems" class="d-flex flex-wrap fs-6 border-top">
@@ -53,7 +53,7 @@
                     <div class="item-heading text-secondary">
                         {{ item.name }}
                     </div>
-                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item, image)">
+                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item, image)">
                     <div class="mt-2">
                         <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
                             <span v-if="inGimmieList(item.id)">Not Interested</span>
