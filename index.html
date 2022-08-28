@@ -1,6 +1,60 @@
 <script src="https://unpkg.com/vue@3"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-<div id="app">{{ message }}</div>
+<div id="app">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary text-white mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">23 Sachem</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" v-for="section in sections">
+                            <a class="nav-link" :class="{ active: active === section.id }" aria-current="page" href="#" @click="goto(section.id)" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02">{{ section.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mb-3 p-2 rounded bg-light">
+            <p class="mb-2">
+                First, we're truly excited for you and hope you'll love this house as much as we do.
+            </p>
+            <p class="mb-2">
+                Below please find pictures of furniture we'd be willing to sell at a fair price
+                for all of us.
+            <p>
+            <p class="mb-2">
+                We're hoping you'll want it all as it will help our move be easier but also
+                get you jump started in the house vs potentially having to wait many months
+                for furniture.
+            <p>
+        </p>
+        </div>
+        <div class="section" v-for="section in sections">
+            <div v-if="active === section.id">
+                <div class="section-heading fs-4 text-primary">{{ section.name }}</div>
+                <div class="row">
+                    <div class="col text-center" v-for="item in section.items">
+                        <div class="item-heading text-secondary">
+                            {{ item.name }}
+                        </div>
+                        <img class="thumbnail me-1" v-for="image in item.images" :src=`images/${image}`>
+                        <div class="mt-2">
+                            <button @click="gimmie(section.id)" class="btn btn-primary btn-sm">
+                                Gimme!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
   const { createApp } = Vue
@@ -8,8 +62,71 @@
   createApp({
     data() {
       return {
-        message: 'Hello GAKMAN!'
+        active: "home",
+        sections: [
+            {
+                id: "dining",
+                name: "Dining Room",
+                items: [
+                    {
+                        id: "dining_room_table",
+                        name: "Table w/ 8 seats + rug",
+                        images: [
+                            "dining_room_table.jpg",
+                            "dining_room_table2.jpg"
+                        ]
+                    },
+                    {
+                        id: "dining_room_hutch",
+                        name: "Hutch",
+                        images: [
+                            "dining_room_hutch.jpg",
+                            "dining_room_hutch2.jpg"
+                        ]
+                    },
+                    {
+                        id: "dining_room_bistro",
+                        name: "Bistro Table",
+                        images: [
+                            "dining_room_bistro.jpg",
+                            "dining_room_bistro2.jpg"
+                        ]
+                    }
+                ]
+            },
+            {
+                id: "eatin",
+                name: "Eat In Area",
+                items: [
+                    {
+                        id: "eatin_table",
+                        name: "Table w/ 8 seats + rug",
+                        images: [
+                            "eat_in_table.jpg"
+                        ]
+                    }
+                ]
+            }
+        ]
       }
+    },
+    methods: {
+        goto(id) {
+            this.active = id;
+        }
     }
   }).mount('#app')
 </script>
+<style>
+    .xsection:hover {
+        background-color: #FFFFDD;
+        cursor: pointer;
+        border: 1px solid #ccc;
+    }
+    .section-heading {
+    }
+    .thumbnail {
+        width: 100px;
+        height: 100px;
+    }
+</style>
