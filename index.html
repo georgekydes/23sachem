@@ -18,36 +18,19 @@
                 </div>
             </div>
         </div>
-        <!--
-        <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-primary text-white mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">23 Sachem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item" v-for="section in sections">
-                            <a class="nav-link" :class="{ active: active === section.id }" aria-current="page" href="#" @click="goto(section.id)" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02">{{ section.name }}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
--->
         <div class="mb-3 p-2 rounded bg-light">
-            <p class="mb-2">
-                First, we're truly excited for you and hope you'll love this house as much as we do.
+            <p class="mb-2 fw-bold">
+                First, we're truly excited for you and hope you'll love this house as much as we do!
             </p>
             <p class="mb-2">
-                We're hoping you'll want it all as it will help ease our move but also
-                get you jump started in the house vs potentially having to wait many months
+                We're hoping you'll want all the furniture featured here as it will help ease our move as well
+                as get you jump started in the house vs potentially having to wait many months
                 for furniture.  We are simply looking to get a fair price.
             <p>
         </p>
         </div>
         <div class="section" v-for="section in sections">
-            <div class="section-heading fs-4 text-white bg-secondary my-3 px-2">{{ section.name }}</div>
+            <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">{{ section.name }}</div>
             <div class="row">
                 <div class="col p-2 m-2 rounded text-center" v-for="item in section.items" :class="{ 'item-highlight': inGimmieList(item.id) }">
                     <div class="item-heading text-secondary">
@@ -75,7 +58,7 @@
                 <div class="modal-body">
                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            <div class="carousel-item" v-for="(image, index) in modal.images" :class="{ active: index === 0 }">
+                            <div class="carousel-item" v-for="(image, index) in modal.images" :class="{ active: index === 0 }" data-bs-interval="100000">
                                 <img :src=`images/${image}` class="d-block w-100" />
                             </div>
                         </div>
