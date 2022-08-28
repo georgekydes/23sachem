@@ -4,7 +4,18 @@
 
 <div id="app">
     <div class="container">
-        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary text-white mb-3">
+        <div class="sticky-top fs-4 bg-primary text-white p-2 mb-3">
+            23 Sachem - Furniture
+            <div v-if="haveItems" class="d-flex flex-wrap fs-6 border-top">
+                <div class="me-1 fw-bold">Interested in:</div>
+                <div class="me-2" v-for="(item, index) in gimmieItems">
+                    {{ item }}
+                    <span v-if="index < gimmieItems.length - 1">, </span>
+                </div>
+            </div>
+        </div>
+        <!--
+        <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-primary text-white mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">23 Sachem</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,43 +30,67 @@
                 </div>
             </div>
         </nav>
-
-        <div v-if="haveItems" id="gimmie">
-            <div class="me-2" v-for="item in gimmieItems">
-                {{ item }}
-            </div>
-        </div>
+-->
         <div class="mb-3 p-2 rounded bg-light">
             <p class="mb-2">
                 First, we're truly excited for you and hope you'll love this house as much as we do.
             </p>
             <p class="mb-2">
-                Use the navigation above to see the pictures of available furniture. Click the "Gimmie" button if interested.
-                At the end you can "Copy" the interested items and send along.
-            <p>
-            <p class="mb-2">
-                We're hoping you'll want it all as it will help our move be easier but also
+                We're hoping you'll want it all as it will help ease our move but also
                 get you jump started in the house vs potentially having to wait many months
-                for furniture.
+                for furniture.  We are simply looking to get a fair price.
             <p>
         </p>
         </div>
         <div class="section" v-for="section in sections">
-            <div v-if="active === section.id">
-                <div class="section-heading fs-4 text-primary">{{ section.name }}</div>
-                <div class="row">
-                    <div class="col text-center" v-for="item in section.items">
-                        <div class="item-heading text-secondary">
-                            {{ item.name }}
-                        </div>
-                        <img class="thumbnail me-1" v-for="image in item.images" :src=`images/${image}`>
-                        <div class="mt-2">
-                            <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-primary': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
-                                <span v-if="inGimmieList(item.id)">No Gimme</span>
-                                <span v-else>Gimmie!</span>
-                            </button>
-                        </div>
+            <div class="section-heading fs-4 text-white bg-secondary my-3 px-2">{{ section.name }}</div>
+            <div class="row">
+                <div class="col p-2 m-2 rounded text-center" v-for="item in section.items" :class="{ 'item-highlight': inGimmieList(item.id) }">
+                    <div class="item-heading text-secondary">
+                        {{ item.name }}
                     </div>
+                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item, image)">
+                    <div class="mt-2">
+                        <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
+                            <span v-if="inGimmieList(item.id)">Not Interested</span>
+                            <span v-else>Interested</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="imageModal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ modal.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" v-for="(image, index) in modal.images" :class="{ active: index === 0 }">
+                                <img :src=`images/${image}` class="d-block w-100" />
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon fw-bold bg-primary p-4 rounded" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon fw-bold bg-primary p-4 rounded" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button @click="gimmie(modal.id)" class="btn" :class="{ 'btn-success': !inGimmieList(modal.id), 'btn-danger': inGimmieList(modal.id)}">
+                        <span v-if="inGimmieList(modal.id)">Not Interested</span>
+                        <span v-else>Interested</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -65,18 +100,24 @@
 <script>
   const { createApp } = Vue
 
+
   createApp({
     data() {
       return {
         active: "home",
         gimmieItems: [],
+        modal: {
+            id: "",
+            name: "",
+            images: []
+        },
         sections: [
             {
                 id: "dining",
                 name: "Dining Room",
                 items: [
                     {
-                        id: "dining_room_table",
+                        id: "Dining Room Table + seats + rug",
                         name: "Table w/ 8 seats + rug",
                         images: [
                             "dining_room_table.jpg",
@@ -84,7 +125,7 @@
                         ]
                     },
                     {
-                        id: "dining_room_hutch",
+                        id: "Dining Room Hutch",
                         name: "Hutch",
                         images: [
                             "dining_room_hutch.jpg",
@@ -92,7 +133,7 @@
                         ]
                     },
                     {
-                        id: "dining_room_bistro",
+                        id: "Dining Room Bistro",
                         name: "Bistro Table",
                         images: [
                             "dining_room_bistro.jpg",
@@ -106,12 +147,20 @@
                 name: "Eat In Area",
                 items: [
                     {
-                        id: "eatin_table",
+                        id: "Eat In Table + seats + rug",
                         name: "Table w/ 8 seats + rug",
                         images: [
                             "eat_in_table.jpg"
                         ]
+                    },
+                    {
+                        id: "Eat In Bistro",
+                        name: "Bistro",
+                        images: [
+                            "eat_in_bistro.jpg"
+                        ]
                     }
+
                 ]
             }
         ]
@@ -120,8 +169,6 @@
     computed: {
         haveItems() {
             return this.gimmieItems.length > 0;
-        },
-        items() {
         }
     },
     methods: {
@@ -137,6 +184,11 @@
         },
         inGimmieList(id) {
             return this.gimmieItems.includes(id);
+        },
+        showItem(item, image) {
+            this.modal.name = item.name;
+            this.modal.id = item.id;
+            this.modal.images = item.images;
         }
     }
   }).mount('#app')
@@ -152,5 +204,9 @@
     .thumbnail {
         width: 100px;
         height: 100px;
+        cursor: pointer;
+    }
+    .item-highlight {
+         background-color: #CCFFCC;
     }
 </style>
