@@ -16,6 +16,8 @@
                     {{ item }}
                     <span v-if="index < gimmieItems.length - 1">, </span>
                 </div>
+                <div v-if="!copied" @click="copyToClipboard" class="copy">Copy to clipboard</div>
+                <div v-if="copied" class="ms-3">Copied!</div>
             </div>
         </div>
         <div class="mb-3 p-2 rounded bg-light">
@@ -23,11 +25,16 @@
                 First, we're truly excited for you and hope you'll love this house as much as we do!
             </p>
             <p class="mb-2">
-                We're hoping you'll want all the furniture featured here as it will help ease our move as well
-                as get you jump started in the house vs potentially having to wait many months
-                for furniture.  We are simply looking to get a fair price.
-            <p>
-        </p>
+                We're hoping you'll want all the furniture featured here as it will:
+                <ul>
+                    <li>help ease our move</li>
+                    <li>get you jump started in the house on a budget</li>
+                    <li>not having to wait many months for furniture</li>
+                </ul>
+            </p>
+            <p class="mb-2">
+                We are simply looking to get a fair price.
+            </p>
         </div>
         <div class="section" v-for="section in sections">
             <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">{{ section.name }}</div>
@@ -94,6 +101,7 @@
       return {
         active: "home",
         gimmieItems: [],
+        copied: false,
         modal: {
             id: "",
             name: "",
@@ -177,6 +185,14 @@
             this.modal.name = item.name;
             this.modal.id = item.id;
             this.modal.images = item.images;
+        },
+        copyToClipboard() {
+            navigator.clipboard.writeText("Hey, we're interested in:\n" + this.gimmieItems.join("\n")).then(() => {
+                // Alert the user that the action took place.
+                // Nobody likes hidden stuff being done under the hood!
+                this.copied = true;
+                setTimeout(() => this.copied = false, 2000);
+            });
         }
     }
   }).mount('#app')
@@ -196,5 +212,9 @@
     }
     .item-highlight {
          background-color: #CCFFCC;
+    }
+    .copy {
+        cursor: pointer;
+        text-decoration: underline dotted;
     }
 </style>
