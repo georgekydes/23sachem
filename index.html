@@ -20,13 +20,18 @@
             </div>
         </nav>
 
+        <div v-if="haveItems" id="gimmie">
+            <div class="me-2" v-for="item in gimmieItems">
+                {{ item }}
+            </div>
+        </div>
         <div class="mb-3 p-2 rounded bg-light">
             <p class="mb-2">
                 First, we're truly excited for you and hope you'll love this house as much as we do.
             </p>
             <p class="mb-2">
-                Below please find pictures of furniture we'd be willing to sell at a fair price
-                for all of us.
+                Use the navigation above to see the pictures of available furniture. Click the "Gimmie" button if interested.
+                At the end you can "Copy" the interested items and send along.
             <p>
             <p class="mb-2">
                 We're hoping you'll want it all as it will help our move be easier but also
@@ -45,8 +50,9 @@
                         </div>
                         <img class="thumbnail me-1" v-for="image in item.images" :src=`images/${image}`>
                         <div class="mt-2">
-                            <button @click="gimmie(section.id)" class="btn btn-primary btn-sm">
-                                Gimme!
+                            <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-primary': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
+                                <span v-if="inGimmieList(item.id)">No Gimme</span>
+                                <span v-else>Gimmie!</span>
                             </button>
                         </div>
                     </div>
@@ -63,6 +69,7 @@
     data() {
       return {
         active: "home",
+        gimmieItems: [],
         sections: [
             {
                 id: "dining",
@@ -110,9 +117,26 @@
         ]
       }
     },
+    computed: {
+        haveItems() {
+            return this.gimmieItems.length > 0;
+        },
+        items() {
+        }
+    },
     methods: {
         goto(id) {
             this.active = id;
+        },
+        gimmie(id) {
+            if (this.gimmieItems.includes(id)) {
+                this.gimmieItems = this.gimmieItems.filter(i => i !== id);
+            } else {
+                this.gimmieItems.push(id);
+            }
+        },
+        inGimmieList(id) {
+            return this.gimmieItems.includes(id);
         }
     }
   }).mount('#app')
