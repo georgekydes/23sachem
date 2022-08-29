@@ -11,7 +11,7 @@
         <div class="sticky-top fs-4 bg-primary text-white p-2 mb-3">
             23 Sachem - Furniture
             <div v-if="haveItems" class="d-flex flex-wrap fs-6 border-top">
-                <div class="me-1 fw-bold">Interested in:</div>
+                <div class="me-1 fw-bold">Interested in ({{ currency(price) }}):</div>
                 <div class="me-2" v-for="(item, index) in gimmieItems">
                     {{ item }}
                     <span v-if="index < gimmieItems.length - 1">, </span>
@@ -22,7 +22,7 @@
         </div>
         <div class="mb-3 p-2 rounded bg-light">
             <p class="mb-2 fw-bold">
-                First, we're truly excited for you and hope you'll love this house as much as we do!
+                First, we're truly excited for you and hope you'll love this house as much as we have!
             </p>
             <p class="mb-2">
                 We're hoping you'll want all the furniture featured here as it will:
@@ -33,17 +33,30 @@
                 </ul>
             </p>
             <p class="mb-2">
-                We are simply looking to get a fair price.
+                We are simply looking to get a fair price and hopefully you feel the prices below are fair.
             </p>
         </div>
         <div class="section" v-for="section in sections">
-            <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">{{ section.name }}</div>
-            <div class="row">
+            <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">
+                {{ section.name }} - {{ currency(section.price) }}
+            </div>
+            <div v-if="section.set" class="row" :class="{ 'item-highlight': inGimmieList(section.id) }">
+                <div class="col p-2 m-2 rounded text-center" v-for="image in section.images">
+                    <img class="thumbnail me-1 mb-1 rounded" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showSection(section)">
+                </div>
+                <div class="my-2 text-center">
+                    <button @click="gimmie(section.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(section.id), 'btn-danger': inGimmieList(section.id)}">
+                        <span v-if="inGimmieList(section.id)">Not Interested</span>
+                        <span v-else>Interested</span>
+                    </button>
+                </div>
+            </div>
+            <div v-else class="row">
                 <div class="col p-2 m-2 rounded text-center" v-for="item in section.items" :class="{ 'item-highlight': inGimmieList(item.id) }">
                     <div class="item-heading text-secondary">
-                        {{ item.name }}
+                        {{ item.name }} - {{ currency(item.price) }}
                     </div>
-                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item, image)">
+                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item)">
                     <div class="mt-2">
                         <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
                             <span v-if="inGimmieList(item.id)">Not Interested</span>
@@ -93,10 +106,9 @@
 </body>
 </html>
 <script>
-  const { createApp } = Vue
+    const { createApp } = Vue;
 
-
-  createApp({
+    createApp({
     data() {
       return {
         active: "home",
@@ -109,8 +121,18 @@
         },
         sections: [
             {
-                id: "dining",
-                name: "Dining Room",
+                id: "Dining Room Set",
+                name: "Dining Room Set (Table + 8 chairs, Hutch, Bistro, Rug)",
+                price: 3000,
+                set: true,
+                images: [
+                    "dining_room_table.jpg",
+                    "dining_room_table2.jpg",
+                    "dining_room_hutch.jpg",
+                    "dining_room_hutch2.jpg",
+                    "dining_room_bistro.jpg",
+                    "dining_room_bistro2.jpg"
+                ],
                 items: [
                     {
                         id: "Dining Room Table + seats + rug",
@@ -136,8 +158,14 @@
                     }
                 ]
             },{
-                id: "eatin",
-                name: "Eat In Area",
+                id: "Eat In Set",
+                name: "Eat In Set (Table + 8 chairs, Bistro, Rug)",
+                price: 2000,
+                set: true,
+                images: [
+                    "eat_in_table.jpg",
+                    "eat_in_bistro.jpg"
+                ],
                 items: [
                     {
                         id: "Eat In Table + seats + rug",
@@ -154,8 +182,17 @@
                     }
                 ]
             },{
-                id: "formal",
-                name: "Formal Living Room",
+                id: "Formal Living Room",
+                name: "Formal Living Room (Couch, Chair + Ottoman, Coffee + End Tables)",
+                price: 2000,
+                set: true,
+                images: [
+                    "formal_couch.jpg",
+                    "formal_chair_ottomon.jpg",
+                    "formal_coffee_table.jpg",
+                    "formal_coffee_table2.jpg",
+                    "formal_end_table.jpg"
+                ],
                 items: [
                     {
                         id: "Formal LR Couch",
@@ -164,17 +201,10 @@
                             "formal_couch.jpg"
                         ]
                     },{
-                        id: "Formal LR Chair + Ottomon",
-                        name: "Chair + Ottomon",
+                        id: "Formal LR Chair + Ottoman",
+                        name: "Chair + Ottoman",
                         images: [
                             "formal_chair_ottomon.jpg"
-                        ]
-                    },{
-                        id: "Formal TV Console",
-                        name: "TV Console",
-                        images: [
-                            "formal_tv_console.jpg",
-                            "formal_tv_console2.jpg"
                         ]
                     },{
                         id: "Formal LR Coffee Table + rug",
@@ -191,13 +221,39 @@
                         ]
                     }
                 ]
+           },{
+                id: "Family Room",
+                name: "Family Room (Sectional w/ sleeper, Chair + Ottoman)",
+                price: 1500,
+                set: true,
+                images: [
+                    "living_room_sectional.jpg",
+                    "living_room_chair_ottomon.jpg"
+                ],
+                items: [
+                    {
+                        id: "LR Sectional",
+                        name: "Sectional w/ sleeper",
+                        images: [
+                            "living_room_sectional.jpg"
+                        ]
+                    },{
+                        id: "LR Chair + Ottoman",
+                        name: "Chair + Ottoman",
+                        images: [
+                            "living_room_chair_ottomon.jpg"
+                        ]
+                    }
+                ]
             },{
                 id: "miscellaneous",
                 name: "Miscellaneous",
+                set: false,
                 items: [
                     {
                         id: "Entryway Table",
                         name: "Entryway Table",
+                        price: 300,
                         images: [
                             "entryway_table.jpg",
                             "entryway_table2.jpg"
@@ -205,12 +261,14 @@
                     },{
                         id: "LR TV Console",
                         name: "TV Console",
+                        price: 200,
                         images: [
                             "living_room_tv_console.jpg"
                         ]
                     },{
                         id: "Washer",
                         name: "Washer",
+                        price: 500,
                         images: [
                             "washer.jpg",
                             "washer2.jpg"
@@ -218,6 +276,7 @@
                     },{
                         id: "Dryer",
                         name: "Dryer",
+                        price: 500,
                         images: [
                             "dryer.jpg",
                             "dryer2.jpg"
@@ -228,19 +287,6 @@
                 id: "free",
                 name: "Free",
                 items: [
-                    {
-                        id: "LR Sectional",
-                        name: "FREE - Sectional w/ sleeper",
-                        images: [
-                            "living_room_sectional.jpg"
-                        ]
-                    },{
-                        id: "LR Chair + Ottomon",
-                        name: "Chair + Ottomon",
-                        images: [
-                            "living_room_chair_ottomon.jpg"
-                        ]
-                    }
                 ]
             }
         ]
@@ -249,9 +295,37 @@
     computed: {
         haveItems() {
             return this.gimmieItems.length > 0;
-        }
+        },
+        price() {
+            return this.gimmieItems.reduce((prev, currId) => {
+                let price = 0;
+                this.sections.forEach(s => {
+                    if (s.id === currId) {
+                        price = s.price;
+                    } else {
+                        items = s.items.filter(i => i.id === currId);
+                        if (items.length > 0) {
+                            price = items[0].price;
+                        }
+                    }
+                });
+
+                return prev + price;
+            }, 0);
+        },
     },
     methods: {
+        currency(value) {
+            if (typeof value !== "number") {
+                return value;
+            }
+            var formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0
+            });
+            return formatter.format(value);
+        },
         goto(id) {
             this.active = id;
         },
@@ -265,13 +339,18 @@
         inGimmieList(id) {
             return this.gimmieItems.includes(id);
         },
-        showItem(item, image) {
+        showSection(section) {
+            this.modal.name = section.name;
+            this.modal.id = section.id;
+            this.modal.images = section.images;
+        },
+        showItem(item) {
             this.modal.name = item.name;
             this.modal.id = item.id;
             this.modal.images = item.images;
         },
         copyToClipboard() {
-            navigator.clipboard.writeText("Hey, we're interested in:\n" + this.gimmieItems.join("\n")).then(() => {
+            navigator.clipboard.writeText("Hey, we're interested in the following for " + this.currency(this.price) + ":\n" + this.gimmieItems.join("\n")).then(() => {
                 // Alert the user that the action took place.
                 // Nobody likes hidden stuff being done under the hood!
                 this.copied = true;
@@ -279,7 +358,7 @@
             });
         }
     }
-  }).mount('#app')
+    }).mount('#app')
 </script>
 <style>
     .xsection:hover {
