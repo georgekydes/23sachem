@@ -111,181 +111,222 @@
 
     createApp({
     data() {
-      return {
-        active: "home",
-        gimmieItems: [],
-        copied: false,
-        modal: {
-            id: "",
-            name: "",
-            images: []
-        },
-        sections: [
-            {
-                id: "Dining Room Set",
-                name: "Dining Room Set (Table + 8 chairs, Hutch, Bistro, Rug)",
-                price: 3000,
-                set: true,
-                images: [
-                    "dining_room_table.jpg",
-                    "dining_room_table2.jpg",
-                    "dining_room_hutch.jpg",
-                    "dining_room_hutch2.jpg",
-                    "dining_room_bistro.jpg",
-                    "dining_room_bistro2.jpg"
-                ],
-                items: [
-                    {
-                        id: "Dining Room Table + seats + rug",
-                        name: "Table w/ 8 seats + rug",
-                        images: [
-                            "dining_room_table.jpg",
-                            "dining_room_table2.jpg"
-                        ]
-                    },{
-                        id: "Dining Room Hutch",
-                        name: "Hutch",
-                        images: [
-                            "dining_room_hutch.jpg",
-                            "dining_room_hutch2.jpg"
-                        ]
-                    },{
-                        id: "Dining Room Bistro",
-                        name: "Bistro Table",
-                        images: [
-                            "dining_room_bistro.jpg",
-                            "dining_room_bistro2.jpg"
-                        ]
-                    }
-                ]
-            },{
-                id: "Eat In Set",
-                name: "Eat In Set (Table + 8 chairs, Bistro, Rug)",
-                price: 2000,
-                set: true,
-                images: [
-                    "eat_in_table.jpg",
-                    "eat_in_bistro.jpg"
-                ],
-                items: [
-                    {
-                        id: "Eat In Table + seats + rug",
-                        name: "Table w/ 8 seats + rug",
-                        images: [
-                            "eat_in_table.jpg"
-                        ]
-                    },{
-                        id: "Eat In Bistro",
-                        name: "Bistro",
-                        images: [
-                            "eat_in_bistro.jpg"
-                        ]
-                    }
-                ]
-            },{
-                id: "Formal Living Room",
-                name: "Formal Living Room (Couch, Chair + Ottoman, Coffee + End Tables)",
-                price: 2000,
-                set: true,
-                images: [
-                    "formal_couch.jpg",
-                    "formal_chair_ottomon.jpg",
-                    "formal_coffee_table.jpg",
-                    "formal_coffee_table2.jpg",
-                    "formal_end_table.jpg"
-                ],
-                items: [
-                    {
-                        id: "Formal LR Couch",
-                        name: "Couch",
-                        images: [
-                            "formal_couch.jpg"
-                        ]
-                    },{
-                        id: "Formal LR Chair + Ottoman",
-                        name: "Chair + Ottoman",
-                        images: [
-                            "formal_chair_ottomon.jpg"
-                        ]
-                    },{
-                        id: "Formal LR Coffee Table + rug",
-                        name: "Coffee Table + rug",
-                        images: [
-                            "formal_coffee_table.jpg",
-                            "formal_coffee_table2.jpg"
-                        ]
-                    },{
-                        id: "Formal LR End Table",
-                        name: "End Table",
-                        images: [
-                            "formal_end_table.jpg"
-                        ]
-                    }
-                ]
-           },{
-                id: "Family Room",
-                name: "Family Room (Sectional w/ sleeper, Chair + Ottoman)",
-                price: 1500,
-                set: true,
-                images: [
-                    "living_room_sectional.jpg",
-                    "living_room_chair_ottomon.jpg"
-                ],
-                items: [
-                    {
-                        id: "LR Sectional",
-                        name: "Sectional w/ sleeper",
-                        images: [
-                            "living_room_sectional.jpg"
-                        ]
-                    },{
-                        id: "LR Chair + Ottoman",
-                        name: "Chair + Ottoman",
-                        images: [
-                            "living_room_chair_ottomon.jpg"
-                        ]
-                    }
-                ]
-            },{
-                id: "miscellaneous",
-                name: "Miscellaneous",
-                set: false,
-                items: [
-                    {
-                        id: "Entryway Table",
-                        name: "Entryway Table",
-                        price: 300,
-                        images: [
-                            "entryway_table.jpg",
-                            "entryway_table2.jpg"
-                        ]
-                    },{
-                        id: "LR TV Console",
-                        name: "TV Console",
-                        price: 200,
-                        images: [
-                            "living_room_tv_console.jpg"
-                        ]
-                    },{
-                        id: "Washer / Dryer",
-                        name: "Washer / Dryer",
-                        price: 1000,
-                        images: [
-                            "washer.jpg",
-                            "washer2.jpg",
-                            "dryer.jpg",
-                            "dryer2.jpg"
-                        ]
-                    }
-                ]
-            },{
-                id: "free",
-                name: "Free",
-                items: [
-                ]
-            }
-        ]
-      }
+        return {
+            active: "home",
+            gimmieItems: [],
+            copied: false,
+            modal: {
+                id: "",
+                name: "",
+                images: []
+            },
+            sections: [
+                {
+                    id: "Dining Room Set",
+                    name: "Dining Room Set (Table + 8 chairs, Hutch, Buffet Table, Rug)",
+                    price: 3000,
+                    set: true,
+                    images: [
+                        "dining_room_table3.jpg",
+                        "dining_room_table4.jpg",
+                        "dining_room_hutch.jpg",
+                        "dining_room_hutch2.jpg",
+                        "dining_room_bistro.jpg",
+                        "dining_room_bistro2.jpg"
+                    ],
+                    items: [
+                        {
+                            id: "Dining Room Table + seats + rug",
+                            name: "Table w/ 8 seats + rug",
+                            images: [
+                                "dining_room_table3.jpg",
+                                "dining_room_table4.jpg"
+                            ]
+                        },{
+                            id: "Dining Room Hutch",
+                            name: "Hutch",
+                            images: [
+                                "dining_room_hutch.jpg",
+                                "dining_room_hutch2.jpg"
+                            ]
+                        },{
+                            id: "Dining Room Buffet Table",
+                            name: "Buffet Table",
+                            images: [
+                                "dining_room_bistro.jpg",
+                                "dining_room_bistro2.jpg"
+                            ]
+                        }
+                    ]
+                },{
+                    id: "Eat In Set",
+                    name: "Eat In Set (Table + 8 chairs, Buffet Table, Rug)",
+                    price: 2000,
+                    set: true,
+                    images: [
+                        "eat_in_table.jpg",
+                        "eat_in_bistro.jpg"
+                    ],
+                    items: [
+                        {
+                            id: "Eat In Table + seats + rug",
+                            name: "Table w/ 8 seats + rug",
+                            images: [
+                                "eat_in_table.jpg"
+                            ]
+                        },{
+                            id: "Eat In Bistro",
+                            name: "Bistro",
+                            images: [
+                                "eat_in_bistro.jpg"
+                            ]
+                        }
+                    ]
+                },{
+                    id: "Formal Living Room Set",
+                    name: "Formal Living Room (Couch, Chair + Ottoman, Coffee + End Tables)",
+                    price: 2000,
+                    set: true,
+                    images: [
+                        "formal_couch.jpg",
+                        "formal_chair_ottomon.jpg",
+                        "formal_coffee_table.jpg",
+                        "formal_coffee_table2.jpg",
+                        "formal_end_table.jpg"
+                    ],
+                    items: [
+                        {
+                            id: "Formal LR Couch",
+                            name: "Couch",
+                            images: [
+                                "formal_couch.jpg"
+                            ]
+                        },{
+                            id: "Formal LR Chair + Ottoman",
+                            name: "Chair + Ottoman",
+                            images: [
+                                "formal_chair_ottomon.jpg"
+                            ]
+                        },{
+                            id: "Formal LR Coffee Table + rug",
+                            name: "Coffee Table + rug",
+                            images: [
+                                "formal_coffee_table.jpg",
+                                "formal_coffee_table2.jpg"
+                            ]
+                        },{
+                            id: "Formal LR End Table",
+                            name: "End Table",
+                            images: [
+                                "formal_end_table.jpg"
+                            ]
+                        }
+                    ]
+                },{
+                    id: "Family Room Set",
+                    name: "Family Room (Sectional w/ sleeper, Chair + Ottoman)",
+                    price: 1500,
+                    set: true,
+                    images: [
+                        "living_room_sectional.jpg",
+                        "living_room_chair_ottomon.jpg"
+                    ],
+                    items: [
+                        {
+                            id: "LR Sectional",
+                            name: "Sectional w/ sleeper",
+                            images: [
+                                "living_room_sectional.jpg"
+                            ]
+                        },{
+                            id: "LR Chair + Ottoman",
+                            name: "Chair + Ottoman",
+                            images: [
+                                "living_room_chair_ottomon.jpg"
+                            ]
+                        }
+                    ]
+                },{
+                    id: "Bedroom Set",
+                    name: "Bedroom (King Bed frame, Dresser w/ mirror, Tall Dresser, 2 End tables)",
+                    price: 2000,
+                    set: true,
+                    images: [
+                        "bedroom_king_bed.jpg",
+                        "bedroom_dresser.jpg",
+                        "bedroom_tall_dresser.jpg",
+                        "bedroom_endtable.jpg",
+                        "bedroom_endtable2.jpg"
+                    ],
+                    items: []
+                },{
+
+                    id: "miscellaneous",
+                    name: "Miscellaneous",
+                    set: false,
+                    items: [
+                        {
+                            id: "Entryway Table",
+                            name: "Entryway Table",
+                            price: 300,
+                            images: [
+                                "entryway_table.jpg",
+                                "entryway_table2.jpg"
+                            ]
+                        },{
+                            id: "3 Wall Mounted Plasms TVs",
+                            name: "3 Wall Mounted Plasma TVs",
+                            price: 1000,
+                            images: [
+                                "tv_plasma_51.jpg",
+                                "tv_plasma_57.jpg",
+                                "tv_plasma_58.jpg"
+                            ]
+                        },{
+                            id: "Bar",
+                            name: "Bar + 3 Chairs",
+                            price: 200,
+                            images: [
+                                "basement_bar.jpg",
+                                "basement_bar2.jpg",
+                                "basement_bar3.jpg"
+                            ]
+                        },{
+                            id: "LR TV Console",
+                            name: "TV Console",
+                            price: 200,
+                            images: [
+                                "living_room_tv_console.jpg"
+                            ]
+                        },{
+                            id: "Washer / Dryer",
+                            name: "Washer / Dryer",
+                            price: 1000,
+                            images: [
+                                "washer3.jpg",
+                                "washer4.jpg",
+                                "dryer3.jpg",
+                                "dryer4.jpg"
+                            ]
+                        },{
+                            id: "Futon",
+                            name: "Futon",
+                            price: 200,
+                            images: [
+                                "futon.jpg"
+                            ]
+                        },{
+                            id: "Ping Pong Table",
+                            name: "Ping Pong Table",
+                            price: 200,
+                            images: [
+                                "ping_pong_table.jpg"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
     },
     computed: {
         haveItems() {
