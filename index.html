@@ -38,7 +38,8 @@
         </div>
         <div class="section" v-for="section in sections">
             <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">
-                {{ section.name }} - {{ currency(section.price) }}
+                {{ section.name }}
+                <span v-if="section.price">- {{ currency(section.price) }}</span>
             </div>
             <div v-if="section.set" class="row" :class="{ 'item-highlight': inGimmieList(section.id) }">
                 <div class="col p-2 m-2 rounded text-center" v-for="image in section.images">
