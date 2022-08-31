@@ -12,7 +12,7 @@
         <div class="sticky-top fs-4 bg-primary text-white p-2 mb-3">
             23 Sachem - Furniture
             <div v-if="haveItems" class="d-flex flex-wrap fs-6 border-top">
-                <div class="me-1 fw-bold">Interested in ({{ currency(price) }}):</div>
+                <div class="me-1 fw-bold">Interested in:</div>
                 <div class="me-2" v-for="(item, index) in gimmieItems">
                     {{ item }}
                     <span v-if="index < gimmieItems.length - 1">, </span>
@@ -21,7 +21,7 @@
                 <div v-if="copied" class="ms-3">Copied!</div>
             </div>
         </div>
-        <div class="mb-3 p-2 rounded bg-light">
+        <div v-if="false" class="mb-3 p-2 rounded bg-light">
             <p class="mb-2 fw-bold">
                 First, we're truly excited for you and hope you'll love this house as much as we have!
             </p>
@@ -40,7 +40,7 @@
         <div class="section" v-for="section in sections">
             <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">
                 {{ section.name }}
-                <span v-if="section.price">- {{ currency(section.price) }}</span>
+                <span v-if="false && section.price">- {{ currency(section.price) }}</span>
             </div>
             <div v-if="section.set" class="row" :class="{ 'item-highlight': inGimmieList(section.id) }">
                 <div class="col p-2 m-2 rounded text-center" v-for="image in section.images">
@@ -56,7 +56,7 @@
             <div v-else class="row">
                 <div class="col p-2 m-2 rounded text-center" v-for="item in section.items" :class="{ 'item-highlight': inGimmieList(item.id) }">
                     <div class="item-heading text-secondary">
-                        {{ item.name }} - {{ currency(item.price) }}
+                        {{ item.name }}
                     </div>
                     <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item)">
                     <div class="mt-2">
