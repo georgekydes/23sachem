@@ -37,37 +37,49 @@
                 We are simply looking to get a fair price and hopefully you feel the prices below are fair.
             </p>
         </div>
-        <div class="section" v-for="section in sections">
-            <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">
-                {{ section.name }}
-                <span v-if="section.price">- {{ currency(section.price) }}</span>
-            </div>
-            <div v-if="section.set" class="row" :class="{ 'item-highlight': inGimmieList(section.id) }">
-                <div class="col p-2 m-2 rounded text-center" v-for="image in section.images">
-                    <img class="thumbnail me-1 mb-1 rounded" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showSection(section)">
+        <template v-for="section in sections">
+            <div class="section" v-if="section.show">
+                <div class="section-heading fs-5 text-white bg-secondary my-3 px-2">
+                    {{ section.name }}
+                    <span v-if="section.price">- {{ currency(section.price) }}</span>
                 </div>
-                <div class="my-2 text-center">
-                    <button @click="gimmie(section.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(section.id), 'btn-danger': inGimmieList(section.id)}">
-                        <span v-if="inGimmieList(section.id)">Not Interested</span>
-                        <span v-else>Interested</span>
-                    </button>
-                </div>
-            </div>
-            <div v-else class="row">
-                <div class="col p-2 m-2 rounded text-center" v-for="item in section.items" :class="{ 'item-highlight': inGimmieList(item.id) }">
-                    <div class="item-heading text-secondary">
-                        {{ item.name }} - {{ currency(item.price) }}
+                <div v-if="section.set" class="row" :class="{ 'sold': section?.sold, 'item-highlight': inGimmieList(section.id) }">
+                    <div class="col p-2 m-2 rounded text-center" v-for="image in section.images">
+                        <img v-if="section?.sold" class="thumbnail me-1 mb-1 rounded" :src=`images/tn_${image}`>
+                        <img v-else class="thumbnail me-1 mb-1 rounded" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showSection(section)">
                     </div>
-                    <img class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item)">
-                    <div class="mt-2">
-                        <button @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
-                            <span v-if="inGimmieList(item.id)">Not Interested</span>
+                    <div class="my-2 text-center button">
+                        <div v-if="section?.sold">
+                            SOLD
+                        </div>
+                        <button v-else @click="gimmie(section.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(section.id), 'btn-danger': inGimmieList(section.id)}">
+                            <span v-if="inGimmieList(section.id)">Not Interested</span>
                             <span v-else>Interested</span>
                         </button>
                     </div>
                 </div>
+                <div v-else class="row">
+                    <template v-for="item in section.items">
+                        <div v-if="item.show" class="col p-2 m-2 rounded text-center" :class="{ 'sold': item?.sold }" :class="{ 'item-highlight': inGimmieList(item.id) }">
+                            <div class="item-heading text-secondary">
+                                {{ item.name }} - {{ currency(item.price) }}
+                            </div>
+                            <img v-if="item?.sold" class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}`>
+                            <img v-else class="thumbnail me-1 mb-1 rounded" v-for="image in item.images" :src=`images/tn_${image}` data-bs-toggle="modal" data-bs-target="#imageModal" @click="showItem(item)">
+                            <div class="mt-2 button">
+                                <div v-if="item?.sold">
+                                    SOLD
+                                </div>
+                                <button v-else @click="gimmie(item.id)" class="btn btn-sm" :class="{ 'btn-success': !inGimmieList(item.id), 'btn-danger': inGimmieList(item.id)}">
+                                    <span v-if="inGimmieList(item.id)">Not Interested</span>
+                                    <span v-else>Interested</span>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
             </div>
-        </div>
+        </template>
     </div>
     <!-- Modal -->
     <div id="imageModal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -124,10 +136,11 @@
             sections: [
                 {
                     id: "Dining Room Set",
-                    name: "Dining Room Set (Table + 8 chairs, Hutch, Buffet Table, Rug)",
+                    name: "Dining Room Set (Table + 8 chairs, Hutch, Buffet Table, Mirror, Rug)",
                     price: 3000,
                     msrp: 7500,
                     set: true,
+                    show: true,
                     images: [
                         "dining_room_table3.jpg",
                         "dining_room_table4.jpg",
@@ -166,6 +179,7 @@
                     price: 2000,
                     msrp: 7000,
                     set: true,
+                    show: false,
                     images: [
                         "eat_in_table.jpg",
                         "eat_in_bistro.jpg"
@@ -187,16 +201,14 @@
                     ]
                 },{
                     id: "Formal Living Room Set",
-                    name: "Formal Living Room (Couch, Chair + Ottoman, Coffee + End Tables, Rug)",
-                    price: 2000,
-                    msrp: 4000,
+                    name: "Formal Living Room (Couch, Chair + Ottoman, Rug)",
+                    price: 500,
+                    msrp: 3000,
                     set: true,
+                    show: true,
                     images: [
                         "formal_couch.jpg",
-                        "formal_chair_ottomon.jpg",
-                        "formal_coffee_table.jpg",
-                        "formal_coffee_table2.jpg",
-                        "formal_end_table.jpg"
+                        "formal_chair_ottomon.jpg"
                     ],
                     items: [
                         {
@@ -211,19 +223,6 @@
                             images: [
                                 "formal_chair_ottomon.jpg"
                             ]
-                        },{
-                            id: "Formal LR Coffee Table + rug",
-                            name: "Coffee Table + rug",
-                            images: [
-                                "formal_coffee_table.jpg",
-                                "formal_coffee_table2.jpg"
-                            ]
-                        },{
-                            id: "Formal LR End Table",
-                            name: "End Table",
-                            images: [
-                                "formal_end_table.jpg"
-                            ]
                         }
                     ]
                 },{
@@ -232,6 +231,7 @@
                     price: 1500,
                     msrp: 3500,
                     set: true,
+                    show: false,
                     images: [
                         "living_room_sectional.jpg",
                         "living_room_chair_ottomon.jpg"
@@ -253,14 +253,14 @@
                     ]
                 },{
                     id: "Bedroom Set",
-                    name: "Bedroom (King Bed frame, Dresser w/ mirror, Tall Dresser, 2 End tables)",
-                    price: 2000,
+                    name: "Bedroom (King Bed frame, Dresser w/ mirror, 2 End tables)",
+                    price: 1500,
                     msrp: 5000,
                     set: true,
+                    show: true,
                     images: [
                         "bedroom_king_bed.jpg",
                         "bedroom_dresser.jpg",
-                        "bedroom_tall_dresser.jpg",
                         "bedroom_endtable.jpg",
                         "bedroom_endtable2.jpg"
                     ],
@@ -270,31 +270,34 @@
                     id: "miscellaneous",
                     name: "Miscellaneous",
                     set: false,
+                    show: true,
                     items: [
                         {
                             id: "Entryway Table",
                             name: "Entryway Table",
-                            price: 100,
+                            price: 0,
                             msrp: 400,
+                            show: true,
                             images: [
                                 "entryway_table.jpg",
                                 "entryway_table2.jpg"
                             ]
                         },{
-                            id: "3 Wall Mounted Samsung Plasma TVs + Soundbar",
-                            name: "3 Wall Mounted Samsung Plasma TVs + Soundbar",
-                            price: 1000,
+                            id: "2 Wall Mounted Samsung Plasma TVs + Soundbar",
+                            name: "2 Wall Mounted Samsung Plasma TVs + Soundbar",
+                            price: 0,
                             msrp: 2400,
+                            show: true,
                             images: [
-                                "tv_plasma_51.jpg",
                                 "tv_plasma_57.jpg",
                                 "tv_plasma_58.jpg"
                             ]
                         },{
                             id: "Bar",
                             name: "Bar + 3 Chairs",
-                            price: 200,
+                            price: 0,
                             msrp: 500,
+                            show: true,
                             images: [
                                 "basement_bar.jpg",
                                 "basement_bar2.jpg",
@@ -305,6 +308,7 @@
                             name: "TV Console",
                             price: 100,
                             msrp: 400,
+                            show: false,
                             images: [
                                 "living_room_tv_console.jpg"
                             ]
@@ -313,6 +317,8 @@
                             name: "LG Washer / Dryer (4/5 Yrs old)",
                             price: 1000,
                             msrp: 2000,
+                            sold: true,
+                            show: false,
                             images: [
                                 "washer3.jpg",
                                 "washer4.jpg",
@@ -324,6 +330,8 @@
                             name: "Futon",
                             price: 200,
                             msrp: 600,
+                            sold: true,
+                            show: false,
                             images: [
                                 "futon.jpg"
                             ]
@@ -332,6 +340,8 @@
                             name: "Ping Pong Table",
                             price: 200,
                             msrp: 400,
+                            sold: true,
+                            show: false,
                             images: [
                                 "ping_pong_table.jpg"
                             ]
@@ -428,5 +438,20 @@
     .copy {
         cursor: pointer;
         text-decoration: underline dotted;
+    }
+
+    .sold .item-heading {
+        color: #ccc !important;
+    }
+
+    .sold .thumbnail {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    .sold .button {
+        font-weight: 600;
+        font-size: 1.5rem;
+        background: yellow;
     }
 </style>
